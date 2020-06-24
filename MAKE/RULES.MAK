@@ -20,28 +20,53 @@
 # THE SOFTWARE.
 #==============================================================================
 
+#------------------------------------------------------------------------------
+# Attempt to auto discover tool chain
+#------------------------------------------------------------------------------
+UNAME := $(shell uname)
 
+ifeq (Darwin,$(findstring Darwin,$(UNAME)))
+OS=MACOS
+else ifeq (linux,$(findstring linux, $(UNAME)))
+OS=LINUX
+else
+OS=UNKNOWN
+endif 
+
+ifeq (MACOS,$(OS))
+CC      := $(shell which aarch64-none-elf-gcc)
+AS      := $(shell which aarch64-none-elf-as)
+LD      := $(shell which aarch64-none-elf-ld)
+AR      := $(shell which aarch64-none-elf-ar) -rcs 
+OBJCOPY := $(shell which aarch64-none-elf-objcopy)
+endif
+
+ifeq (LINUX,$(OS))
+CC=
+AS=
+LD=
+endif
 
 #------------------------------------------------------------------------------
-# attempt to auto discover tool chain
+# command line options for the various tools
 #------------------------------------------------------------------------------
-#ifeq ($(OS), Darwin)
-CC=aarch64-none-elf-gcc
-AS=aarch64-none-elf-as
-LD=aarch64-none-elf-ld
-OBJCOPY=aarch64-none-elf-objcopy
-CFLAGS=-Wall -Werror -ffreestanding -g
-AFLAGS=
-#endif
+LFLAGS      = -T $(PLATFORMDIR)/target.ld -Map=$(BUILDROOT)/$@.map -L$(BUILDROOT) -static $(LIBS) $(LIBS)
+CFLAGS      = -Wall -ggdb -O -nostartfiles -Xlinker "-verbose -gc-sections" -ffunction-sections -std=c99 $(INC) 
+CPPFLAGS    = 	
+INC         = -I$(ROOTDIR)/include -I$(TARGETDIR) -I$(ROOTDIR)/os/arc/$(ARC)/include -I$(PLATFORMDIR) -I$(PERIPHERALDIR)/include
 
+#------------------------------------------------------------------------------
+# patter match rules for compiling the sources
+#------------------------------------------------------------------------------
+#OBJS        = $(patsubst %.c,%.o,$(CSRC)) $(patsubst %.s,%.o,$(ASRC))
 
-OBJS= $(patsubst %.c,%.o,$(CSRC)) $(patsubst %.s,%.o,$(ASRC)) 
-BSPOBJS=$(patsubst %.s,%.o,$(BSPASRC))
-
+BSPOBJS     = $(patsubst %.s,%.o,$(BSPASRC))
+AOBJS		= $(patsubst %, $(BUILDROOT)/%, $(patsubst %.s,%.o,$(ASRC)))
+OBJS		= $(patsubst %, $(BUILDDIR)/%, $(patsubst %.c,%.o,$(CSRC))) 
 
 %.o: %.c
 	$(CC) -g -c $(CFLAGS) $(CINC) -o $@ $<
 
 %.o: %.s
-	$(AS) -g $(AFLAGS) -o $@ $<
+	$(AS) $(INC) -g $(AFLAGS) -o $@ $<
 

@@ -19,3 +19,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
 # THE SOFTWARE.
 #==============================================================================
+
+include ./MAKE/RULES.MAK
+
+
+SUBMODULES	:= rpi4-bsp
+
+all: 
+	make -C rpi4-bsp -f Makefile
+

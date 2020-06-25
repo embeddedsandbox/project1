@@ -60,15 +60,6 @@ INC         += -I$(ROOTDIR)/include
 #------------------------------------------------------------------------------
 # patter match rules for compiling the sources
 #------------------------------------------------------------------------------
-#OBJS        = $(patsubst %.c,%.o,$(CSRC)) $(patsubst %.s,%.o,$(ASRC))
-
-BSPOBJS     = $(strip $(patsubst %.s,%.o,$(BSPASRC)))
+#BSPOBJS     = $(strip $(patsubst %.s,%.o,$(BSPASRC)))
 AOBJS		= $(strip $(patsubst %,$(BUILDROOT)/%,$(patsubst %.s,%.o,$(ASRC))))
 OBJS		= $(strip $(patsubst %,$(BUILDDIR)/%,$(patsubst %.c,%.o,$(CSRC))))
-
-#%.o: %.c
-#	$(CC) -g -c $(CFLAGS) $(CINC) -o $(BUILDDIR)/$@ $<
-#
-#%.o: %.s
-#	$(AS) $(INC) -g $(AFLAGS) -o $(BUILDROOT)/$@ $<
-

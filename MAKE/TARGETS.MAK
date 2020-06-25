@@ -50,23 +50,18 @@ $(SUBMODULES):
 	$(MAKE) -C $(LOCALDIR)/$@ LOCALDIR=$(LOCALDIR)/$@ BUILDDIR=$(BUILDDIR)/$@ LIBRARY=$(LIBRARY) ARC=$(ARC) TOP_LEVEL_LIBRARIES=" " $@
 
 
-.PHONY: clean local_clean subdir_clean
-local_clean:
-ifeq ($(OBJS),"")
-else
-	rm -f $(BUILDDIR)/$(OBJS)
-endif
-ifeq ($(AOBJS),"")
-else
-	rm -f $(BUILDDIR)/$(AOBJS)
-endif
-ifeq ($(LIBRARY),"")
-else
-	rm -f $(BUILDDIR)/$(LIBRARY)
-endif
+.PHONY: clean local_clean_objs local_clean_aobjs local_lib submodule_clean subdir_clean
+local_clean_objs:
+	$(foreach fileToDelete, $(OBJS), rm -f $(fileToDelete);)
+
+local_clean_aobjs:
+	$(foreach fileToDelete, $(AOBJS), rm -f $(fileToDelete);)
+
+local_clean_lib:
+	rm -f $(LIBRARY);
 
 submodule_clean:
-	$(foreach subdir, $(SUBMODULES), $(shell $(MAKE) BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(subdir)  -C $(subdir) clean))
+	$(foreach subdir, $(SUBMODULES), $(shell make BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(subdir)  -C $(subdir) clean))
 
 subdir_clean:
-	$(foreach subdir, $(SUBDIRS), $(shell $(MAKE) BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(subdir) -C $(subdir) clean))
+	$(foreach subdir, $(SUBDIRS), $(shell make BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(subdir) -C $(subdir)  clean))

@@ -38,4 +38,5 @@ all:
 
 include ./MAKE/TARGETS.MAK
 
-clean: submodule_clean
+clean: 
+	$(foreach sub, $(SUBMODULES), $(MAKE) BUILDROOT=$(BUILDROOT)  BUILDDIR=$(BUILDDIR)/rpi4-bsp -C $(sub) clean)

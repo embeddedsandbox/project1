@@ -24,7 +24,18 @@ include ./MAKE/RULES.MAK
 
 
 SUBMODULES	:= rpi4-bsp
+BUILDROOT 	:= $(CURDIR)/build
+BUILDDIR	:= $(CURDIR)/build
+SRCDIR		:= $(CURDIR)
+
+.PHONY: clean all
 
 all: 
-	make -C rpi4-bsp -f Makefile
+	@mkdir -p build
+	@mkdir -p $(BUILDDIR)/rpi4-bsp
+	make  SRCDIR=$(SRCDIR)/rpi4-bsp BUILDROOT=$(BUILDROOT)  BUILDDIR=$(BUILDDIR)/rpi4-bsp -C rpi4-bsp -f Makefile 
 
+
+include ./MAKE/TARGETS.MAK
+
+clean: submodule_clean

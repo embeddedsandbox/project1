@@ -21,6 +21,12 @@
 #==============================================================================
 
 
+$(BUILDDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+$(BUILDROOT)/%.o: $(SRCDIR)/%.s
+	$(AS)  $(INC) $(AFLAGS) -o $@ $<
+
 #===============================================================================
 # Generic build root for library
 #===============================================================================
@@ -32,7 +38,6 @@ $(LIBRARY): $(OBJS) | $(SUBMODULES) asmobjs
 #===============================================================================
 asmobjs: $(AOBJS)
 
-
 #===============================================================================
 # Build submodules dirs of a library.  This is to allow multi levels to a top 
 # level module
@@ -43,4 +48,25 @@ $(SUBMODULES):
 	@echo "    "BUILDING $@
 	@echo =============================================================================
 	$(MAKE) -C $(LOCALDIR)/$@ LOCALDIR=$(LOCALDIR)/$@ BUILDDIR=$(BUILDDIR)/$@ LIBRARY=$(LIBRARY) ARC=$(ARC) TOP_LEVEL_LIBRARIES=" " $@
-    
+
+
+.PHONY: clean local_clean subdir_clean
+local_clean:
+ifeq ($(OBJS),"")
+else
+	rm -f $(BUILDDIR)/$(OBJS)
+endif
+ifeq ($(AOBJS),"")
+else
+	rm -f $(BUILDDIR)/$(AOBJS)
+endif
+ifeq ($(LIBRARY),"")
+else
+	rm -f $(BUILDDIR)/$(LIBRARY)
+endif
+
+submodule_clean:
+	$(foreach subdir, $(SUBMODULES), $(shell $(MAKE) BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(subdir)  -C $(subdir) clean))
+
+subdir_clean:
+	$(foreach subdir, $(SUBDIRS), $(shell $(MAKE) BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(subdir) -C $(subdir) clean))

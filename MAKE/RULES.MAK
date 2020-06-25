@@ -52,23 +52,23 @@ endif
 #------------------------------------------------------------------------------
 # command line options for the various tools
 #------------------------------------------------------------------------------
-LFLAGS      = -T $(PLATFORMDIR)/target.ld -Map=$(BUILDROOT)/$@.map -L$(BUILDROOT) -static $(LIBS) $(LIBS)
+#LFLAGS      = -Map=$(BUILDROOT)/$@.map -L$(BUILDROOT) -static $(LIBS) $(LIBS)
 CFLAGS      = -Wall -ggdb -O -nostartfiles -Xlinker "-verbose -gc-sections" -ffunction-sections -std=c99 $(INC) 
 CPPFLAGS    = 	
-INC         = -I$(ROOTDIR)/include -I$(TARGETDIR) -I$(ROOTDIR)/os/arc/$(ARC)/include -I$(PLATFORMDIR) -I$(PERIPHERALDIR)/include
+INC         += -I$(ROOTDIR)/include 
 
 #------------------------------------------------------------------------------
 # patter match rules for compiling the sources
 #------------------------------------------------------------------------------
 #OBJS        = $(patsubst %.c,%.o,$(CSRC)) $(patsubst %.s,%.o,$(ASRC))
 
-BSPOBJS     = $(patsubst %.s,%.o,$(BSPASRC))
-AOBJS		= $(patsubst %, $(BUILDROOT)/%, $(patsubst %.s,%.o,$(ASRC)))
-OBJS		= $(patsubst %, $(BUILDDIR)/%, $(patsubst %.c,%.o,$(CSRC))) 
+BSPOBJS     = $(strip $(patsubst %.s,%.o,$(BSPASRC)))
+AOBJS		= $(strip $(patsubst %,$(BUILDROOT)/%,$(patsubst %.s,%.o,$(ASRC))))
+OBJS		= $(strip $(patsubst %,$(BUILDDIR)/%,$(patsubst %.c,%.o,$(CSRC))))
 
-%.o: %.c
-	$(CC) -g -c $(CFLAGS) $(CINC) -o $@ $<
-
-%.o: %.s
-	$(AS) $(INC) -g $(AFLAGS) -o $@ $<
+#%.o: %.c
+#	$(CC) -g -c $(CFLAGS) $(CINC) -o $(BUILDDIR)/$@ $<
+#
+#%.o: %.s
+#	$(AS) $(INC) -g $(AFLAGS) -o $(BUILDROOT)/$@ $<
 

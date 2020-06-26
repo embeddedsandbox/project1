@@ -26,7 +26,7 @@ MACHINE=raspi3
 NUM_CPU=4
 #NUM_CPU=1
 CPU=cortex-a53
-KERNELIMAGE=../rpi4-bsp/boot/bootloader.elf
+KERNELIMAGE=./build/qemu_sim.elf
 
 
 qemu-system-aarch64 -S -s -nographic -M ${MACHINE} -cpu ${CPU}  -kernel ${KERNELIMAGE} -smp ${NUM_CPU}

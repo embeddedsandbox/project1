@@ -28,15 +28,32 @@ BUILDROOT 	:= $(CURDIR)/build
 BUILDDIR	:= $(CURDIR)/build
 SRCDIR		:= $(CURDIR)
 
-.PHONY: clean all
+.PHONY: clean all submodule_build_dirs nite_owl qemu_sim
 
-all: 
-	@mkdir -p build
-	@mkdir -p $(BUILDDIR)/rpi4-bsp
-	make  SRCDIR=$(SRCDIR)/rpi4-bsp BUILDROOT=$(BUILDROOT)  BUILDDIR=$(BUILDDIR)/rpi4-bsp -C rpi4-bsp -f Makefile 
-
+all: submodule_build_dirs nite_owl qemu_sim
+#	make  SRCDIR=$(SRCDIR)/rpi4-bsp BUILDROOT=$(BUILDROOT)  BUILDDIR=$(BUILDDIR)/rpi4-bsp -C rpi4-bsp -f Makefile 
 
 include ./MAKE/TARGETS.MAK
 
+submodule_build_dirs:
+	$(foreach submod, $(SUBMODULES), mkdir -p $(BUILDROOT)/$(submod))
+
+nite_owl: $(SUBMODULES)
+	@echo =============================================================================
+	@echo "    "BUILDING $@
+	@echo =============================================================================
+	$(LD) $(LFLAGS) -o $(BUILDROOT)/nite_owl.elf -T platform.ld $(BUILDROOT)/entry.o -L$(BUILDROOT) --library=platform  
+	$(OBJCOPY) -O binary $(BUILDDIR)/nite_owl.elf $(BUILDDIR)/nite_owl.bin 
+
+
+# Note this isn't locating the different parts in the right places yet. probably need a linker script to get this right. 
+qemu_sim: nite_owl
+	@echo =============================================================================
+	@echo "    "BUILDING $@
+	@echo =============================================================================
+	$(LD) -o $(BUILDROOT)/qemu_sim.elf -T qemu_sim.ld
+
 clean: 
-	$(foreach sub, $(SUBMODULES), $(MAKE) BUILDROOT=$(BUILDROOT)  BUILDDIR=$(BUILDDIR)/rpi4-bsp -C $(sub) clean)
+	$(foreach sub, $(SUBMODULES), $(MAKE) BUILDROOT=$(BUILDROOT)  BUILDDIR=$(BUILDDIR)/$(sub) -C $(sub) clean)
+	rm -f $(BUILDROOT)/*.elf
+	rm -f $(BUILDROOT)/*.bin

@@ -54,6 +54,7 @@ endif
 #------------------------------------------------------------------------------
 #LFLAGS      = -Map=$(BUILDROOT)/$@.map -L$(BUILDROOT) -static $(LIBS) $(LIBS)
 CFLAGS      = -Wall -ggdb -O -nostartfiles -Xlinker "-verbose -gc-sections" -ffunction-sections -std=c99 $(INC) 
+AFLAGS		= --gstabs+
 CPPFLAGS    = 	
 INC         += -I$(ROOTDIR)/include 
 

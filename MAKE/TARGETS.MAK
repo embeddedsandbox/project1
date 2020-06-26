@@ -47,8 +47,14 @@ $(SUBMODULES):
 	@echo =============================================================================
 	@echo "    "BUILDING $@
 	@echo =============================================================================
-	$(MAKE) -C $(LOCALDIR)/$@ LOCALDIR=$(LOCALDIR)/$@ BUILDDIR=$(BUILDDIR)/$@ LIBRARY=$(LIBRARY) ARC=$(ARC) TOP_LEVEL_LIBRARIES=" " $@
+	$(MAKE) SRCDIR=$(SRCDIR)/$@ BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$@ -C $@ -f Makefile
 
+$(SUBDIRS):
+	@echo =============================================================================
+	@echo "    "BUILDING $@
+	@echo =============================================================================
+	mkdir -p $(BUILDDIR)/$@
+	$(MAKE) SRCDIR=$(SRCDIR)/$@ BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$@ -C $@ -f Makefile
 
 .PHONY: clean local_clean_objs local_clean_aobjs local_lib submodule_clean subdir_clean
 local_clean_objs:

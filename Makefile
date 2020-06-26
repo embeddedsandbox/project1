@@ -24,19 +24,24 @@ include ./MAKE/RULES.MAK
 
 
 SUBMODULES	:= rpi4-bsp
-BUILDROOT 	:= $(CURDIR)/build
+CSRC		:=
+ASRC		:=
 BUILDDIR	:= $(CURDIR)/build
 SRCDIR		:= $(CURDIR)
+
+# Should probably just export these two instead of passing them down. 
+export SRCROOT		:= $(CURDIR)
+export BUILDROOT 	:= $(CURDIR)/build
 
 .PHONY: clean all submodule_build_dirs nite_owl qemu_sim
 
 all: submodule_build_dirs nite_owl qemu_sim
-#	make  SRCDIR=$(SRCDIR)/rpi4-bsp BUILDROOT=$(BUILDROOT)  BUILDDIR=$(BUILDDIR)/rpi4-bsp -C rpi4-bsp -f Makefile 
+
 
 include ./MAKE/TARGETS.MAK
 
 submodule_build_dirs:
-	$(foreach submod, $(SUBMODULES), mkdir -p $(BUILDROOT)/$(submod))
+	$(foreach submod, $(SUBMODULES), mkdir -p $(BUILDROOT)/$(submod);)
 
 nite_owl: $(SUBMODULES)
 	@echo =============================================================================

@@ -39,8 +39,8 @@ $(LIBRARY): $(OBJS) | $(SUBMODULES) asmobjs
 asmobjs: $(AOBJS)
 
 #===============================================================================
-# Build submodules dirs of a library.  This is to allow multi levels to a top 
-# level module
+#  build a Library 
+# --NOTE: A Sub Module will have a new BUILD ROOT
 #===============================================================================
 .PHONY: $(SUBMODULES)
 $(SUBMODULES):
@@ -49,6 +49,11 @@ $(SUBMODULES):
 	@echo =============================================================================
 	$(MAKE) SRCDIR=$(SRCDIR)/$@ BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$@ -C $@ -f Makefile
 
+#===============================================================================
+# build files that are part of a library, 
+# -- Note that the build ROOT does not change
+#===============================================================================
+.PHONY: $(SUBDIRS)
 $(SUBDIRS):
 	@echo =============================================================================
 	@echo "    "BUILDING $@
@@ -56,6 +61,10 @@ $(SUBDIRS):
 	mkdir -p $(BUILDDIR)/$@
 	$(MAKE) SRCDIR=$(SRCDIR)/$@ BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$@ -C $@ -f Makefile
 
+
+#===============================================================================
+# all clean related targets
+#===============================================================================
 .PHONY: clean local_clean_objs local_clean_aobjs local_lib submodule_clean subdir_clean
 local_clean_objs:
 	$(foreach fileToDelete, $(OBJS), rm -f $(fileToDelete);)
@@ -67,7 +76,7 @@ local_clean_lib:
 	rm -f $(LIBRARY);
 
 submodule_clean:
-	$(foreach subdir, $(SUBMODULES), $(shell make BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(subdir)  -C $(subdir) clean))
+	$(foreach subdir, $(SUBMODULES), $(shell make BUILDROOT=$(BUILDDIR)/$(subdir) BUILDDIR=$(BUILDDIR)/$(subdir)  -C $(subdir) clean))
 
 subdir_clean:
 	$(foreach subdir, $(SUBDIRS), $(shell make BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(subdir) -C $(subdir)  clean))

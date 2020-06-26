@@ -45,7 +45,7 @@ SECTIONS
 		_el1StackCpu3	= . ;
         *(.data) 
         *(.bss)
-
+        
     } > RAM
 }
 

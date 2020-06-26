@@ -1,3 +1,5 @@
 build
 .history
 .DS_Store
+rpi4-bsp
+rtos

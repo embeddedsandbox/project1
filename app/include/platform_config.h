@@ -1,4 +1,4 @@
-/*==============================================================================
+//==============================================================================
 // Copyright 2020 Daniel Boals & Michael Boals
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,34 +18,13 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
 // THE SOFTWARE.
-//=============================================================================*/
+//==============================================================================
+#ifndef __PLATFORM_CONFIG_H__
+#define __PLATFORM_CONFIG_H__
 
-ENTRY(_entry)
 
-MEMORY
-{
-    RAM (wx): ORIGIN = 0x00080000, LENGTH = 2048M
-    ROM (rx): ORIGIN = 0x80000000, LENGTH = 1024M
-}
 
-SECTIONS
-{
-    kernel 0x80000 : 
-	{
-        *(.entry)
-        *(.text)
-		. = ALIGN(16);
-		. = . + 4096;
-		_el1StackCpu0	= . ;
-		. = . + 4096;
-		_el1StackCpu1	= . ;
-		. = . + 4096;
-		_el1StackCpu2	= . ;
-		. = . + 4096;
-		_el1StackCpu3	= . ;
-        *(.data) 
-        *(.bss)
-        
-    } > RAM
-}
+#endif
+
+
 

@@ -5,18 +5,77 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "cppdbg",
+            "request": "launch",
+            "name": "qemu rpi3",
+            "program": "./build/qemu_sim.elf",
+            "miDebuggerServerAddress": "localhost:3333",
+            "miDebuggerPath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true,                    
+                }
+            ]
+            
+        },
+        {
             "type": "gdb",
             "request": "attach",
-            "name": "qemu bootloader",
+            "name": "qemu",
             "executable": "./spi4-bsp/boot/bootloader.elf",
             "target": ":1234",
             "remote": true,
             "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText"
+            "valuesFormatting": "parseText",
             //"gdbpath": "${HOME}/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb"
             "gdbpath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb"
             // NOTES  run qemu with 
             //     
         },
+        {
+            "type": "gdb",
+            "request": "attach",
+            "name": "CPU 0 openocd bootloader",
+            "executable": "./build/rpi4-bsp/boot/bootloader.elf",
+            "target": ":3333",
+            "remote": true,
+            "cwd": "${workspaceRoot}",
+            "valuesFormatting": "parseText",
+            //"gdbpath": "${HOME}/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb"
+            "gdbpath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb"
+            // NOTES  run qemu with 
+            //     
+        },
+        {
+            "type": "cppdbg",
+            "request": "launch",
+            "name": "rpi4 nite-owl",
+            "program": "./build/nite_owl.elf",
+            "miDebuggerServerAddress": "localhost:3333",
+            "miDebuggerPath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true,                    
+                }
+            ]
+            
+        },
+
     ]
 }

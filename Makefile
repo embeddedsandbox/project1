@@ -22,12 +22,15 @@
 
 include ./MAKE/RULES.MAK
 
-
-SUBMODULES	:= rpi4-bsp
+SUBMODULES	:= rtos rpi4-bsp
 CSRC		:=
 ASRC		:=
 BUILDDIR	:= $(CURDIR)/build
 SRCDIR		:= $(CURDIR)
+export ARC	= aarch64
+export BSP	= rpi4-bsp
+
+LIBS		= $(strip $(patsubst %,-l%,$(SUBMODULES)))
 
 # Should probably just export these two instead of passing them down. 
 export SRCROOT		:= $(CURDIR)
@@ -36,7 +39,7 @@ export BUILDROOT 	:= $(CURDIR)/build
 .PHONY: clean all submodule_build_dirs nite_owl qemu_sim
 
 all: submodule_build_dirs nite_owl qemu_sim
-
+	echo $(LIBS)
 
 include ./MAKE/TARGETS.MAK
 
@@ -47,7 +50,7 @@ nite_owl: $(SUBMODULES)
 	@echo =============================================================================
 	@echo "    "BUILDING $@
 	@echo =============================================================================
-	$(LD) $(LFLAGS) -o $(BUILDROOT)/nite_owl.elf -T platform.ld $(BUILDROOT)/entry.o -L$(BUILDROOT) --library=platform  
+	$(LD) $(LFLAGS) -o $(BUILDROOT)/nite_owl.elf -T platform.ld $(BUILDROOT)/entry.o -L$(BUILDROOT) $(LIBS) $(LIBS)
 	$(OBJCOPY) -O binary $(BUILDDIR)/nite_owl.elf $(BUILDDIR)/nite_owl.bin 
 
 
@@ -59,6 +62,6 @@ qemu_sim: nite_owl
 	$(LD) -o $(BUILDROOT)/qemu_sim.elf -T qemu_sim.ld
 
 clean: 
-	$(foreach sub, $(SUBMODULES), $(MAKE) BUILDROOT=$(BUILDROOT)  BUILDDIR=$(BUILDDIR)/$(sub) -C $(sub) clean)
+	$(foreach sub, $(SUBMODULES), $(MAKE) BUILDROOT=$(BUILDROOT)  BUILDDIR=$(BUILDDIR)/$(sub) -C $(sub) clean;)
 	rm -f $(BUILDROOT)/*.elf
 	rm -f $(BUILDROOT)/*.bin

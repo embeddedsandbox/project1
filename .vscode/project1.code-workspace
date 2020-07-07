@@ -3,5 +3,12 @@
 		{
 			"path": ".."
 		}
-	]
+    ],
+    "settings": {
+        "files.associations": {
+            "*.mak": "makefile",
+            "*.MAK": "makefile",
+            "type_traits": "c"
+        }
+    }
 }

@@ -37,7 +37,7 @@ ifeq (MACOS,$(OS))
 CC      := $(shell which aarch64-none-elf-gcc)
 AS      := $(shell which aarch64-none-elf-as)
 LD      := $(shell which aarch64-none-elf-ld)
-AR      := $(shell which aarch64-none-elf-ar) -rcs 
+AR      := $(shell which aarch64-none-elf-ar) -rs 
 OBJCOPY := $(shell which aarch64-none-elf-objcopy)
 endif
 
@@ -53,10 +53,12 @@ endif
 # command line options for the various tools
 #------------------------------------------------------------------------------
 #LFLAGS      = -Map=$(BUILDROOT)/$@.map -L$(BUILDROOT) -static $(LIBS) $(LIBS)
-CFLAGS      = -Wall -ggdb -O -nostartfiles -Xlinker "-verbose -gc-sections" -ffunction-sections -std=c99 $(INC) 
+CFLAGS      = -std=c11 -Wall -g -ggdb -O0 -fno-builtin -nostartfiles -Xlinker "-verbose -gc-sections" -ffunction-sections -std=c99 $(INC) 
 AFLAGS		= --gstabs+
 CPPFLAGS    = 	
-INC         += -I$(ROOTDIR)/include 
+INC         += -I$(SRCROOT)/include 
+INC			+= -I$(SRCROOT)/rtos/include
+INC			+= -I$(SRCROOT)/rtos/arc/$(ARC)/include
 
 #------------------------------------------------------------------------------
 # patter match rules for compiling the sources

@@ -27,10 +27,15 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 $(BUILDROOT)/%.o: $(SRCDIR)/%.s
 	$(AS)  $(INC) $(AFLAGS) -o $@ $<
 
+
+.PHONE: LIBRARY
+LIBRARY:  $(OBJS)
+	$(AR) $(LIBRARY) $?
+
 #===============================================================================
 # Generic build root for library
 #===============================================================================
-$(LIBRARY): $(OBJS) | $(SUBMODULES) asmobjs
+$(LIBRARY): $(OBJS) 
 	$(AR) $(LIBRARY) $?
 
 #===============================================================================
@@ -47,7 +52,7 @@ $(SUBMODULES):
 	@echo =============================================================================
 	@echo "    "BUILDING $@
 	@echo =============================================================================
-	$(MAKE) SRCDIR=$(SRCDIR)/$@ BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$@ -C $@ -f Makefile
+	@$(MAKE) SRCDIR=$(SRCDIR)/$@ BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$@ -C $@ -f Makefile
 
 #===============================================================================
 # build files that are part of a library, 
@@ -56,11 +61,11 @@ $(SUBMODULES):
 .PHONY: $(SUBDIRS)
 $(SUBDIRS):
 	@echo =============================================================================
-	@echo "    "BUILDING $@
+	@echo "    "BUILDING $(patsubst $(BUILDROOT)/%,%, $(LIBRARY)) $@
 	@echo =============================================================================
-	mkdir -p $(BUILDDIR)/$@
-	$(MAKE) SRCDIR=$(SRCDIR)/$@ BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$@ -C $@ -f Makefile
 
+	@mkdir -p $(BUILDDIR)/$@
+	$(MAKE) SRCDIR=$(SRCDIR)/$@ LIBRARY=$(LIBRARY) BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$@ -C $@ -f Makefile
 
 #===============================================================================
 # all clean related targets
@@ -76,7 +81,7 @@ local_clean_lib:
 	rm -f $(LIBRARY);
 
 submodule_clean:
-	$(foreach subdir, $(SUBMODULES), $(shell make BUILDROOT=$(BUILDDIR)/$(subdir) BUILDDIR=$(BUILDDIR)/$(subdir)  -C $(subdir) clean))
+	$(foreach subdir, $(SUBMODULES), $(shell make LIBRARY=$(LIBRARY) BUILDROOT=$(BUILDDIR)/$(subdir) BUILDDIR=$(BUILDDIR)/$(subdir)  -C $(subdir) clean;))
 
 subdir_clean:
-	$(foreach subdir, $(SUBDIRS), $(shell make BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(subdir) -C $(subdir)  clean))
+	$(foreach subdir, $(SUBDIRS), $(shell make LIBRARY=$(LIBRARY) BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(subdir) -C $(subdir)  clean;))

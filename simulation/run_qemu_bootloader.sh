@@ -28,5 +28,7 @@ NUM_CPU=4
 CPU=cortex-a53
 KERNELIMAGE=./build/qemu_sim.elf
 
-
+echo =========================================================================
+echo   PRESS   CTRL+A then X to quit
+echo =========================================================================
 qemu-system-aarch64 -S -s -nographic -M ${MACHINE} -cpu ${CPU}  -kernel ${KERNELIMAGE} -smp ${NUM_CPU}

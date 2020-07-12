@@ -9,6 +9,17 @@
             "*.mak": "makefile",
             "*.MAK": "makefile",
             "type_traits": "c"
-        }
+        },
+        "cSpell.words": [
+            "DSSBS",
+            "MAIR",
+            "MMIO",
+            "MPIDR",
+            "SCLTR",
+            "SCTLR",
+            "SCTR",
+            "TTBR",
+            "aarch"
+        ]
     }
 }

@@ -1,3 +1,6 @@
 [submodule "rtos"]
 	path = rtos
 	url = git@github.com:dboals-es/rtos.git
+[submodule "rpi4-bsp"]
+	path = rpi4-bsp
+	url = ./rpi4-bsp

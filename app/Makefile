@@ -20,3 +20,17 @@
 # THE SOFTWARE.
 #==============================================================================
 
+# Need to start passing this in.
+LIBRARY := $(BUILDROOT)/libapp.a
+SUBDIRS := src
+CSRC	:= 
+ASRC	:=
+
+include $(SRCROOT)/MAKE/RULES.MAK 
+
+.PHONY: all clean
+all: $(SUBDIRS)
+
+include $(SRCROOT)/MAKE/TARGETS.MAK
+
+clean: subdir_clean local_clean_objs

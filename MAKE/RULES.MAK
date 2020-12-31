@@ -59,6 +59,7 @@ CPPFLAGS    =
 INC         += -I$(SRCROOT)/include 
 INC			+= -I$(SRCROOT)/rtos/include
 INC			+= -I$(SRCROOT)/rtos/arc/$(ARC)/include
+INC			+= -I$(SRCROOT)/rtos/arc/$(ARC)/common_peripherals/include
 
 #------------------------------------------------------------------------------
 # patter match rules for compiling the sources

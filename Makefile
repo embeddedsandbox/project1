@@ -22,7 +22,7 @@
 
 include ./MAKE/RULES.MAK
 
-SUBMODULES	:= rtos rpi4-bsp
+SUBMODULES	:= rtos rpi4-bsp app
 CSRC		:=
 ASRC		:=
 BUILDDIR	:= $(CURDIR)/build

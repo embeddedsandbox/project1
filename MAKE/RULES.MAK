@@ -42,11 +42,11 @@ OBJCOPY := $(shell which aarch64-none-elf-objcopy)
 endif
 
 ifeq (LINUX,$(OS))
-CC      := $(shell which )
-AS      := $(shell which )
-LD      := $(shell which )
-AR      := $(shell which )
-OBJCOPY := $(shell which )
+CC      := $(shell which aarch64-none-elf-gcc )
+AS      := $(shell which aarch64-none-elf-as )
+LD      := $(shell which aarch64-none-elf-ld )
+AR      := $(shell which aarch64-none-elf-ar )
+OBJCOPY := $(shell which aarch64-none-elf-objcopy )
 endif
 
 #------------------------------------------------------------------------------

@@ -27,10 +27,10 @@ UNAME := $(shell uname)
 
 ifeq (Darwin,$(findstring Darwin,$(UNAME)))
 OS=MACOS
-end
+endif
 ifeq (Linux,$(findstring Linux, $(UNAME)))
 OS=LINUX
-end
+endif
 
 ifeq (MACOS,$(OS))
 CC      := $(shell which aarch64-none-elf-gcc)

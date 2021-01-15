@@ -27,11 +27,10 @@ UNAME := $(shell uname)
 
 ifeq (Darwin,$(findstring Darwin,$(UNAME)))
 OS=MACOS
-else ifeq (linux,$(findstring linux, $(UNAME)))
+end
+ifeq (Linux,$(findstring Linux, $(UNAME)))
 OS=LINUX
-else
-OS=UNKNOWN
-endif 
+end
 
 ifeq (MACOS,$(OS))
 CC      := $(shell which aarch64-none-elf-gcc)
@@ -45,7 +44,7 @@ ifeq (LINUX,$(OS))
 CC      := $(shell which aarch64-none-elf-gcc )
 AS      := $(shell which aarch64-none-elf-as )
 LD      := $(shell which aarch64-none-elf-ld )
-AR      := $(shell which aarch64-none-elf-ar )
+AR      := $(shell which aarch64-none-elf-ar ) -rs
 OBJCOPY := $(shell which aarch64-none-elf-objcopy )
 endif
 

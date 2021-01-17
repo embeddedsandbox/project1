@@ -3,7 +3,7 @@ jobs:
   build:
     runs-on: self-hosted-01
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
       - run: make clean
       - run: make
      

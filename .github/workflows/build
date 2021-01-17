@@ -1,0 +1,10 @@
+name: build code
+on: [push]
+jobs:
+  check-bats-version:
+    runs-on: home.xyzics.com
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: make
+     

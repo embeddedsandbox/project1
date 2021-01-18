@@ -1,8 +1,8 @@
 [submodule "rpi4-bsp"]
 	path = rpi4-bsp
-	url = https://github.com/embeddedsandbox/rpi4-bsp.git
+	url = git@github.com:embeddedsandbox/rpi4-bsp.git
 	branch = master
 [submodule "rtos"]
 	path = rtos
-	url = https://github.com/embeddedsandbox/rtos.git
+	url = git@github.com:embeddedsandbox/rtos.git
 	branch = master

@@ -14,10 +14,12 @@ jobs:
 
       - name: Checkout Submodules
         run: |
+            cd $GITHUB_WORKSPACE         
             git submodule init
             git submodule update
       - name: bulid sources
         run: |
-            cd $GITHUB_WORKSPACE && make
+          cd $GITHUB_WORKSPACE 
+          make
 
      

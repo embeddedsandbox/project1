@@ -16,12 +16,6 @@ jobs:
         with:
           submodules: 'true'
 
-      - name: Checkout Submodules
-        run: |
-            pwd
-            echo $GITHUB_WORKSPACE
-            git submodule init
-            git submodule update
       - name: bulid sources
         run: |
           make

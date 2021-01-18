@@ -5,7 +5,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    container : eembeddedsandbox/aarch64-none-elf-10.2-2020.11:latest
+    container : embeddedsandbox/aarch64-none-elf-10.2-2020.11:latest
     defaults:
       run:
         shell: bash
@@ -13,13 +13,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
- #       with:
- #         submodules: 'recursive'
+        with:
+          submodules: 'true'
 
-      - name: Checkout Submodules
-        run: |
-            git submodule init
-            git submodule update
       - name: bulid sources
         run: |
           make

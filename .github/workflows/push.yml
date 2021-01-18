@@ -4,8 +4,8 @@ on:
     
 jobs:
   build:
-    runs-on: ubuntu-18.04
-    container : embeddedsandbox/aarch64-non-elf-cross-compiler:latest
+    runs-on: ubuntu-20.04
+    container : eembeddedsandbox/aarch64-none-elf-10.2-2020.11:latest
     defaults:
       run:
         shell: bash

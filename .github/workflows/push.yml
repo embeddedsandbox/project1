@@ -7,19 +7,22 @@ jobs:
     runs-on: ubuntu-18.04
     container : embeddedsandbox/aarch64-non-elf-cross-compiler:latest
     name : build
+    defaults:
+      run:
+        shell: bash
+      working-directory: $GITHUB_WORKSPACE
+
     steps:
       - uses: actions/checkout@v2
-#        with: 
-#          Submodules: 'recursive'
+ #       with:
+ #         submodules: 'recursive'
 
       - name: Checkout Submodules
         run: |
-            cd $GITHUB_WORKSPACE         
             git submodule init
             git submodule update
       - name: bulid sources
         run: |
-          cd $GITHUB_WORKSPACE 
           make
-
+    
      

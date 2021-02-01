@@ -1,0 +1,4 @@
+[submodule "rpi4-bsp"]
+	path = rpi4-bsp
+	url = git@github.com:embeddedsandbox/rpi4-bsp.git
+	branch = master

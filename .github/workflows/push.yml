@@ -20,4 +20,3 @@ jobs:
           cppcheck --std=c11 --quiet .
           make
     
-     

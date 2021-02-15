@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "type": "cppdbg",
             "request": "launch",
@@ -57,7 +58,7 @@
         {
             "type": "cppdbg",
             "request": "launch",
-            "name": "rpi4 nite-owl",
+            "name": "rpi4 nite-owl CPU0",
             "program": "./build/nite_owl.elf",
             "miDebuggerServerAddress": "localhost:3333",
             "miDebuggerPath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb",
@@ -76,6 +77,78 @@
             ]
             
         },
+        {
+            "type": "cppdbg",
+            "request": "launch",
+            "name": "rpi4 nite-owl CPU1",
+            "program": "./build/nite_owl.elf",
+            "miDebuggerServerAddress": "localhost:3334",
+            "miDebuggerPath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true,                    
+                }
+            ]
+            
+        },
+        {
+            "type": "cppdbg",
+            "request": "launch",
+            "name": "rpi4 nite-owl CPU2",
+            "program": "./build/nite_owl.elf",
+            "miDebuggerServerAddress": "localhost:3335",
+            "miDebuggerPath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true,                    
+                }
+            ]
+            
+        },
+        {
+            "type": "cppdbg",
+            "request": "launch",
+            "name": "rpi4 nite-owl CPU3",
+            "program": "./build/nite_owl.elf",
+            "miDebuggerServerAddress": "localhost:3336",
+            "miDebuggerPath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true,                    
+                }
+            ]
+            
+        },
 
+    ],
+    "compounds": [
+        {
+            "name": "All CPUs",
+            "configurations": ["rpi4 nite-owl CPU0", "rpi4 nite-owl CPU1", "rpi4 nite-owl CPU2", "rpi4 nite-owl CPU3"],
+        }
     ]
 }

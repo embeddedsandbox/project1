@@ -6,3 +6,6 @@
 	path = rtos
 	url = git@github.com:embeddedsandbox/rtos.git
 	branch = master
+[submodule "qemu-aarch64-virt-bsp"]
+	path = qemu-aarch64-virt-bsp
+	url = git@github.com:embeddedsandbox/qemu-aarch64-virt-bsp.git

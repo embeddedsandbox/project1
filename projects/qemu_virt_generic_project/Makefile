@@ -20,38 +20,31 @@
 # THE SOFTWARE.
 #==============================================================================
 
-include ./MAKE/RULES.MAK
+# Should probably just export these two instead of passing them down. 
+export SRCROOT		:= $(CURDIR)/../..
+
+include $(SRCROOT)/MAKE/RULES.MAK
 
 SUBMODULES	:= rtos rpi4-bsp app
 CSRC		:=
 ASRC		:=
-SRCDIR		:= $(CURDIR)
 export ARC	= aarch64
 export BSP	= rpi4-bsp
 
 LIBS		= $(strip $(patsubst %,-l%,$(SUBMODULES)))
 
-# Should probably just export these two instead of passing them down. 
-export SRCROOT		:= $(CURDIR)
 
-.PHONY: clean all submodule_build_dirs nite_owl qemu_sim
+.PHONY: clean all qemu_sim
 
-all: nite_owl qemu_sim
+all: qemu_sim
 
-include ./MAKE/TARGETS.MAK
+include $(SRCROOT)/MAKE/TARGETS.MAK
 
-nite_owl: BUILDDIR = $(CURDIR)/build/nite_owl
-nite_owl: BUILDROOT = $(CURDIR)/build/nite_owl
-nite_owl: NITE_OWL_SUBMODULES_
-	@echo =============================================================================
-	@echo "    "BUILDING $@
-	@echo =============================================================================
-	$(LD) $(LFLAGS) -o $(BUILDROOT)/nite_owl.elf -T platform.ld $(BUILDROOT)/entry.o -L$(BUILDROOT) $(LIBS) $(LIBS)
-	$(OBJCOPY) -O binary $(BUILDDIR)/nite_owl.elf $(BUILDDIR)/nite_owl.bin 
 
 # Note this isn't locating the different parts in the right places yet. probably need a linker script to get this right. 
-qemu_sim: BUILDDIR = $(CURDIR)/build/qemu_sim
-qemu_sim: BUILDROOT = $(CURDIR)/build/qemu_sim
+qemu_sim: BUILDDIR = $(SRCROOT)/build/qemu_sim
+qemu_sim: BUILDROOT = $(SRCROOT)/build/qemu_sim
+qemu_sim: SRCDIR = $(SRCROOT)
 qemu_sim: QEMU_SIM_SUBMODULES_
 	@echo =============================================================================
 	@echo "    "BUILDING $@
@@ -59,4 +52,4 @@ qemu_sim: QEMU_SIM_SUBMODULES_
 	$(LD) $(LFLAGS) -o $(BUILDROOT)/qemu_sim.elf -T qemu_sim.ld $(BUILDROOT)/entry.o -L$(BUILDROOT) $(LIBS) $(LIBS)	
 
 clean: 
-	rm -rf $(CURDIR)/build
+	rm -rf $(SRCROOT)/build

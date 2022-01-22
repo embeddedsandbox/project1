@@ -54,7 +54,7 @@ $(BUILDDIR):
 	@echo =============================================================================
 	@echo "    "BUILDING $@
 	@echo =============================================================================
-	$(foreach sub, $(SUBMODULES), $(MAKE) SRCDIR=$(SRCDIR)/$(sub) BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(sub) -f Makefile -C $(sub);)
+	$(foreach sub, $(SUBMODULES), $(MAKE) SRCROOT=$(SRCROOT) SRCDIR=$(SRCDIR)/$(sub) BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(sub) -f Makefile -C $(SRCDIR)/$(sub);)
 
 #===============================================================================
 # build files that are part of a library, 

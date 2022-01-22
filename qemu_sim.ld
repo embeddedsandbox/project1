@@ -20,31 +20,38 @@
 // THE SOFTWARE.
 //=============================================================================*/
 
-ENTRY(_start)
+ENTRY(_entry)
 
 MEMORY
 {
-    RAM (wx): ORIGIN = 0x00000000, LENGTH = 2048M
-    ROM (rx): ORIGIN = 0x80000000, LENGTH = 1024M
+    RAM (WX): ORIGIN = 0x00000000, LENGTH = 2048M
+    ROM (RX): ORIGIN = 0x80000000, LENGTH = 1024M
 }
 
 SECTIONS
 {
-    blp 0x00000 : 
-	{
-        ./build/rpi4-bsp/boot/blp.elf (.secure)
-        ./build/rpi4-bsp/boot/blp.elf (.text)
-        ./build/rpi4-bsp/boot/blp.elf (.data)
-        ./build/rpi4-bsp/boot/blp.elf (.bss)
+ /*   blp 0x00000 : 
+	{        
+        ./build/qemu_sim/rpi4-bsp/boot/blp.elf (.startup)
+    } > RAM1
+*/
+    
+    platform :
+    {
+        *(.entry)
+        *(.text)
+		. = ALIGN(16);
+		. = . + 4096;
+		_el1StackCpu0	= . ;
+		. = . + 4096;
+		_el1StackCpu1	= . ;
+		. = . + 4096;
+		_el1StackCpu2	= . ;
+		. = . + 4096;
+		_el1StackCpu3	= . ;
+        *(.data) 
+        *(.bss)
     } > RAM
 
-    . = 0x80000;
-    kernel 0x80000 :
-    {
-        ./build/nite_owl.elf(.kernel)
-        ./build/nite_owl.elf(.text)
-        ./build/nite_owl.elf(.data)
-        ./build/nite_owl.elf(.bss)
-    } > RAM
 }
 

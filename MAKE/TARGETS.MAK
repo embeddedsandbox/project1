@@ -43,16 +43,18 @@ $(LIBRARY): $(OBJS)
 #===============================================================================
 asmobjs: $(AOBJS)
 
+$(BUILDDIR):
+	mkdir -p $(BUILDDIR)
+
 #===============================================================================
 #  build a Library 
 # --NOTE: A Sub Module will have a new BUILD ROOT
 #===============================================================================
-.PHONY: $(SUBMODULES)
-$(SUBMODULES):
+%_SUBMODULES_:
 	@echo =============================================================================
 	@echo "    "BUILDING $@
 	@echo =============================================================================
-	@$(MAKE) SRCDIR=$(SRCDIR)/$@ BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$@ -C $@ -f Makefile
+	$(foreach sub, $(SUBMODULES), $(MAKE) SRCDIR=$(SRCDIR)/$(sub) BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$(sub) -f Makefile -C $(sub);)
 
 #===============================================================================
 # build files that are part of a library, 
@@ -63,7 +65,6 @@ $(SUBDIRS):
 	@echo =============================================================================
 	@echo "    "BUILDING $(patsubst $(BUILDROOT)/%,%, $(LIBRARY)) $@
 	@echo =============================================================================
-
 	@mkdir -p $(BUILDDIR)/$@
 	$(MAKE) SRCDIR=$(SRCDIR)/$@ LIBRARY=$(LIBRARY) BUILDROOT=$(BUILDROOT) BUILDDIR=$(BUILDDIR)/$@ -C $@ -f Makefile
 

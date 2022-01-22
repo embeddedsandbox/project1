@@ -4,42 +4,39 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
-        {
-            "type": "cppdbg",
-            "request": "launch",
-            "name": "qemu rpi3",
-            "program": "./build/qemu_sim.elf",
-            "miDebuggerServerAddress": "localhost:3333",
-            "miDebuggerPath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb",
-            "args": [],
-            "stopAtEntry": true,
-            "cwd": "${workspaceRoot}",
-            "environment": [],
-            "externalConsole": true,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true,                    
-                }
-            ]
-            
-        },
-        {
+/*        {
             "type": "gdb",
             "request": "attach",
             "name": "qemu",
-            "executable": "./spi4-bsp/boot/bootloader.elf",
+            "executable": "./build/qemu_sim/qemu_sim.elf",
             "target": ":1234",
             "remote": true,
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
-            //"gdbpath": "${HOME}/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb"
             "gdbpath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb"
             // NOTES  run qemu with 
             //     
+        },        
+*/
+        {
+            "type": "cppdbg",
+            "request": "launch",
+            "name": "qemu 1",
+            "program": "./build/qemu_sim/qemu_sim.elf",
+            "miDebuggerServerAddress": ":1234",
+            "MIMode": "gdb",
+            //"target": ":1234",
+            //"remote": true,
+            "cwd": "${workspaceRoot}",
+            "miDebuggerPath": "/Users/dboals/bin/x-tools/aarch64-none-elf/bin/aarch64-none-elf-gdb",
+            "miDebuggerArgs": " -ex 'handle all print nostop noignore'",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true,
+                }
+            ]    
         },
         {
             "type": "gdb",

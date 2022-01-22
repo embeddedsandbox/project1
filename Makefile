@@ -25,7 +25,6 @@ include ./MAKE/RULES.MAK
 SUBMODULES	:= rtos rpi4-bsp app
 CSRC		:=
 ASRC		:=
-BUILDDIR	:= $(CURDIR)/build
 SRCDIR		:= $(CURDIR)
 export ARC	= aarch64
 export BSP	= rpi4-bsp
@@ -34,34 +33,30 @@ LIBS		= $(strip $(patsubst %,-l%,$(SUBMODULES)))
 
 # Should probably just export these two instead of passing them down. 
 export SRCROOT		:= $(CURDIR)
-export BUILDROOT 	:= $(CURDIR)/build
 
 .PHONY: clean all submodule_build_dirs nite_owl qemu_sim
 
-all: submodule_build_dirs nite_owl qemu_sim
-	echo $(LIBS)
+all: nite_owl qemu_sim
 
 include ./MAKE/TARGETS.MAK
 
-submodule_build_dirs:
-	$(foreach submod, $(SUBMODULES), mkdir -p $(BUILDROOT)/$(submod);)
-
-nite_owl: $(SUBMODULES)
+nite_owl: BUILDDIR = $(CURDIR)/build/nite_owl
+nite_owl: BUILDROOT = $(CURDIR)/build/nite_owl
+nite_owl: NITE_OWL_SUBMODULES_
 	@echo =============================================================================
 	@echo "    "BUILDING $@
 	@echo =============================================================================
 	$(LD) $(LFLAGS) -o $(BUILDROOT)/nite_owl.elf -T platform.ld $(BUILDROOT)/entry.o -L$(BUILDROOT) $(LIBS) $(LIBS)
 	$(OBJCOPY) -O binary $(BUILDDIR)/nite_owl.elf $(BUILDDIR)/nite_owl.bin 
 
-
 # Note this isn't locating the different parts in the right places yet. probably need a linker script to get this right. 
-qemu_sim: nite_owl
+qemu_sim: BUILDDIR = $(CURDIR)/build/qemu_sim
+qemu_sim: BUILDROOT = $(CURDIR)/build/qemu_sim
+qemu_sim: QEMU_SIM_SUBMODULES_
 	@echo =============================================================================
 	@echo "    "BUILDING $@
 	@echo =============================================================================
-	$(LD) -o $(BUILDROOT)/qemu_sim.elf -T qemu_sim.ld
+	$(LD) $(LFLAGS) -o $(BUILDROOT)/qemu_sim.elf -T qemu_sim.ld $(BUILDROOT)/entry.o -L$(BUILDROOT) $(LIBS) $(LIBS)	
 
 clean: 
-	$(foreach sub, $(SUBMODULES), $(MAKE) BUILDROOT=$(BUILDROOT)  BUILDDIR=$(BUILDDIR)/$(sub) -C $(sub) clean;)
-	rm -f $(BUILDROOT)/*.elf
-	rm -f $(BUILDROOT)/*.bin
+	rm -rf $(CURDIR)/build

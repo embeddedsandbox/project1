@@ -21,12 +21,12 @@
 # THE SOFTWARE.
 #==============================================================================
 
-MACHINE=raspi3
-#MACHINE=vexpress-a15
+#MACHINE=raspi3
+MACHINE=vexpress-a15
 NUM_CPU=4
 #NUM_CPU=1
 CPU=cortex-a53
-KERNELIMAGE=./build/qemu_sim.elf
+KERNELIMAGE=./build/qemu_sim/qemu_sim.elf
 
 echo =========================================================================
 echo   PRESS   CTRL+A then X to quit

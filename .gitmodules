@@ -9,3 +9,4 @@
 [submodule "qemu-aarch64-virt-bsp"]
 	path = qemu-aarch64-virt-bsp
 	url = git@github.com:embeddedsandbox/qemu-aarch64-virt-bsp.git
+	branch = master
